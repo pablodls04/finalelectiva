@@ -1,0 +1,46 @@
+name: CI/CD Workflow
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run unit tests
+        run: npm test
+
+  docker:
+    needs: tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t practica-nginx .
+
+      - name: Run Docker container and test service
+        run: |
+          # Ejecutar el contenedor en segundo plano
+          docker run -d -p 8080:80 --name practica-container practica-nginx
+          # Esperar a que nginx inicie
+          sleep 5
+          # Realizar una petición HTTP y verificar que contiene "Hola Mundo"
+          curl -s http://localhost:8080 | grep "Hola Mundo"

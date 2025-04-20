@@ -1,0 +1,15 @@
+{
+  "name": "practica-devops",
+  "version": "1.0.0",
+  "description": "Proyecto DevOps CI/CD con GitHub Actions y Docker",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "Pablo de los Santos",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
